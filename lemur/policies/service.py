@@ -69,3 +69,15 @@ def update(policy_id, **kwargs):
         setattr(policy, key, value)
 
     return database.update(policy)
+
+def render(args):
+    """
+    Helper to parse REST Api requests
+
+    :param args:
+    :return:
+    """
+    query = database.session_query(RotationPolicy)
+
+    return database.sort_and_page(query, RotationPolicy, args)
+

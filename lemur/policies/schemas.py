@@ -7,13 +7,25 @@
 """
 from marshmallow import fields
 
-from lemur.common.schema import LemurOutputSchema
+from lemur.common.schema import LemurOutputSchema, LemurInputSchema
 
 
 class RotationPolicyOutputSchema(LemurOutputSchema):
     id = fields.Integer()
+    name = fields.String()
     days = fields.Integer()
 
 
 class RotationPolicyNestedOutputSchema(RotationPolicyOutputSchema):
     pass
+
+
+class RotationPolicyInputSchema(LemurInputSchema):
+    id = fields.Integer()
+    name = fields.String(required=True)
+    days = fields.Integer(required=True)
+
+
+polices_input_schema = RotationPolicyInputSchema()
+polices_output_schema = RotationPolicyOutputSchema()
+policess_output_schema = RotationPolicyOutputSchema(many=True)
