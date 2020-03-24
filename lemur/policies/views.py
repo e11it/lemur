@@ -5,7 +5,7 @@ from lemur.policies import service
 from lemur.auth.service import AuthenticatedResource
 from lemur.auth.permissions import SensitiveDomainPermission
 
-from lemur.common.schema import validate_schema
+from lemur.common.schema import validate_schema, decorator_error_handling
 from lemur.common.utils import paginated_parser
 
 from lemur.policies.schemas import (
@@ -206,6 +206,7 @@ class Police(AuthenticatedResource):
             days=data["days"],
         )
 
+    @decorator_error_handling
     def delete(self, police_id):
         service.delete(police_id)
         return {"result": True}
