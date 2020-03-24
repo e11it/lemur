@@ -5,13 +5,13 @@ from lemur.policies import service
 from lemur.auth.service import AuthenticatedResource
 from lemur.auth.permissions import SensitiveDomainPermission
 
-from lemur.common.schema import validate_schema
+from lemur.common.schema import validate_schema, decorator_error_handling
 from lemur.common.utils import paginated_parser
 
 from lemur.policies.schemas import (
-    polices_input_schema,
-    polices_output_schema,
-    policess_output_schema
+    police_input_schema,
+    police_output_schema,
+    polices_output_schema
 )
 
 mod = Blueprint("polices", __name__)
@@ -24,18 +24,18 @@ class PolicesList(AuthenticatedResource):
     def __init__(self):
         super(PolicesList, self).__init__()
 
-    @validate_schema(None, policess_output_schema)
+    @validate_schema(None, polices_output_schema)
     def get(self):
         """
-        .. http:get:: /domains
+        .. http:get:: /polices
 
-           The current domain list
+           The current polices list
 
            **Example request**:
 
            .. sourcecode:: http
 
-              GET /domains HTTP/1.1
+              GET /polices HTTP/1.1
               Host: example.com
               Accept: application/json, text/javascript
 
@@ -51,13 +51,13 @@ class PolicesList(AuthenticatedResource):
                 "items": [
                     {
                       "id": 1,
-                      "name": "www.example.com",
-                      "sensitive": false
+                      "name": "example",
+                      "days": 10
                     },
                     {
                       "id": 2,
-                      "name": "www.example2.com",
-                      "sensitive": false
+                      "name": "example2",
+                      "days": 20
                     }
                   ]
                 "total": 2
@@ -76,25 +76,25 @@ class PolicesList(AuthenticatedResource):
         args = parser.parse_args()
         return service.render(args)
 
-    @validate_schema(polices_input_schema, polices_output_schema)
+    @validate_schema(police_input_schema, police_output_schema)
     def post(self, data=None):
         print(data["name"], data["days"])
         """
-        .. http:post:: /domains
+        .. http:post:: /polices
 
-           The current domain list
+           The current police list
 
            **Example request**:
 
            .. sourcecode:: http
 
-              GET /domains HTTP/1.1
+              GET /polices HTTP/1.1
               Host: example.com
               Accept: application/json, text/javascript
 
               {
-                "name": "www.example.com",
-                "sensitive": false
+                "name": "example",
+                "days": 10
               }
 
            **Example response**:
@@ -107,8 +107,8 @@ class PolicesList(AuthenticatedResource):
 
               {
                 "id": 1,
-                "name": "www.example.com",
-                "sensitive": false
+                "name": "example",
+                "days": 10
               }
 
            :query sortBy: field to sort on
@@ -122,23 +122,24 @@ class PolicesList(AuthenticatedResource):
         """
         return service.create(name=data["name"], days=data["days"])
 
+
 class Police(AuthenticatedResource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         super(Police, self).__init__()
 
-    @validate_schema(None, polices_output_schema)
+    @validate_schema(None, police_output_schema)
     def get(self, police_id):
         """
-        .. http:get:: /sources/1
+        .. http:get:: /polices/1
 
-           Get a specific account
+           Get a police
 
            **Example request**:
 
            .. sourcecode:: http
 
-              GET /sources/1 HTTP/1.1
+              GET /polices/1 HTTP/1.1
               Host: example.com
               Accept: application/json, text/javascript
 
@@ -151,21 +152,9 @@ class Police(AuthenticatedResource):
               Content-Type: text/javascript
 
               {
-                "options": [
-                    {
-                        "name": "accountNumber",
-                        "required": true,
-                        "value": 111111111112,
-                        "helpMessage": "Must be a valid AWS account number!",
-                        "validation": "/^[0-9]{12,12}$/",
-                        "type": "int"
-                    }
-                ],
-                "pluginName": "aws-source",
+                "name": "example",
                 "id": 3,
-                "lastRun": "2015-08-01T15:40:58",
-                "description": "test",
-                "label": "test"
+                "days": 10
               }
 
            :reqheader Authorization: OAuth token to authenticate
@@ -173,37 +162,25 @@ class Police(AuthenticatedResource):
         """
         return service.get(police_id)
 
-    @validate_schema(polices_input_schema, polices_output_schema)
+    @validate_schema(police_input_schema, police_output_schema)
     def put(self, police_id, data=None):
         """
-        .. http:put:: /sources/1
+        .. http:put:: /polices/1
 
-           Updates an account
+           Updates an police
 
            **Example request**:
 
            .. sourcecode:: http
 
-              POST /sources/1 HTTP/1.1
+              POST /polices/1 HTTP/1.1
               Host: example.com
               Accept: application/json, text/javascript
 
               {
-                "options": [
-                    {
-                        "name": "accountNumber",
-                        "required": true,
-                        "value": 111111111112,
-                        "helpMessage": "Must be a valid AWS account number!",
-                        "validation": "/^[0-9]{12,12}$/",
-                        "type": "int"
-                    }
-                ],
-                "pluginName": "aws-source",
+                "name": "example",
                 "id": 3,
-                "lastRun": "2015-08-01T15:40:58",
-                "description": "test",
-                "label": "test"
+                "days": 10
               }
 
            **Example response**:
@@ -215,26 +192,11 @@ class Police(AuthenticatedResource):
               Content-Type: text/javascript
 
               {
-                "options": [
-                    {
-                        "name": "accountNumber",
-                        "required": true,
-                        "value": 111111111112,
-                        "helpMessage": "Must be a valid AWS account number!",
-                        "validation": "/^[0-9]{12,12}$/",
-                        "type": "int"
-                    }
-                ],
-                "pluginName": "aws-source",
+                "name": "example",
                 "id": 3,
-                "lastRun": "2015-08-01T15:40:58",
-                "description": "test",
-                "label": "test"
+                "days": 10
               }
 
-           :arg accountNumber: aws account number
-           :arg label: human readable account label
-           :arg description: some description about the account
            :reqheader Authorization: OAuth token to authenticate
            :statuscode 200: no error
         """
@@ -244,6 +206,7 @@ class Police(AuthenticatedResource):
             days=data["days"],
         )
 
+    @decorator_error_handling
     def delete(self, police_id):
         service.delete(police_id)
         return {"result": True}
