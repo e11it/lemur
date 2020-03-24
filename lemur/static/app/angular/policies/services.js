@@ -6,7 +6,7 @@ angular.module('lemur')
   })
   .service('PolicesService', function ($location, PolicesApi) {
     var PolicesService = this;
-    PolicesService.findDomainByName = function (filterValue) {
+    PolicesService.findPoliceByName = function (filterValue) {
       return PolicesApi.getList({'filter[name]': filterValue})
         .then(function (polices) {
           return polices;

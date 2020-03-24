@@ -26,6 +26,6 @@ class RotationPolicyInputSchema(LemurInputSchema):
     days = fields.Integer(required=True)
 
 
-polices_input_schema = RotationPolicyInputSchema()
-polices_output_schema = RotationPolicyOutputSchema()
-policess_output_schema = RotationPolicyOutputSchema(many=True)
+police_input_schema = RotationPolicyInputSchema()
+police_output_schema = RotationPolicyOutputSchema()
+polices_output_schema = RotationPolicyOutputSchema(many=True)
