@@ -18,6 +18,7 @@ class DefaultOutputSchema(LemurOutputSchema):
     organization = fields.String()
     organizational_unit = fields.String()
     issuer_plugin = fields.String()
+    days = fields.List(fields.String())
 
 
 default_output_schema = DefaultOutputSchema()

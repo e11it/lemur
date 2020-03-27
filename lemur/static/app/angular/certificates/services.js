@@ -267,6 +267,9 @@ angular.module('lemur')
         if (certificate.dnsProviderId) {
           certificate.dnsProvider = {id: certificate.dnsProviderId};
         }
+        if (!certificate.days) {
+          certificate.days = defaults.days;
+        }
       });
     };
 

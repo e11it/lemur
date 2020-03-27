@@ -99,6 +99,9 @@ angular.module('lemur')
         $scope.authorities = authorities;
       });
     };
+    $scope.getValidityDays = function () {
+      $scope.validityDays = $scope.certificate.days;
+    };
 
     $scope.dateOptions = {
       formatYear: 'yy',
