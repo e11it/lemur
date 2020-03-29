@@ -94,7 +94,10 @@ class CertificateInputSchema(CertificateCreationSchema):
     notify = fields.Boolean(default=True)
     rotation = fields.Boolean()
     rotation_policy = fields.Nested(
-        AssociatedRotationPolicySchema, required=True
+        AssociatedRotationPolicySchema,
+         missing={"name": "default"},
+         allow_none=True,
+         default={"name": "default"},
     )
 
     # certificate body fields
