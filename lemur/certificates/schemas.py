@@ -95,9 +95,9 @@ class CertificateInputSchema(CertificateCreationSchema):
     rotation = fields.Boolean()
     rotation_policy = fields.Nested(
         AssociatedRotationPolicySchema,
-         missing={"name": "default"},
-         allow_none=True,
-         default={"name": "default"},
+        missing={"name": "default"},
+        allow_none=True,
+        default={"name": "default"},
     )
 
     # certificate body fields
@@ -166,7 +166,10 @@ class CertificateEditInputSchema(CertificateSchema):
     )  # deprecated
     roles = fields.Nested(AssociatedRoleSchema, missing=[], many=True)
     rotation_policy = fields.Nested(
-        AssociatedRotationPolicySchema, required=True
+        AssociatedRotationPolicySchema,
+        missing={"name": "default"},
+        allow_none=True,
+        default={"name": "default"},
     )
 
     @pre_load
