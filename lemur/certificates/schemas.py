@@ -160,9 +160,7 @@ class CertificateEditInputSchema(CertificateSchema):
         AssociatedCertificateSchema, missing=[], many=True
     )  # deprecated
     roles = fields.Nested(AssociatedRoleSchema, missing=[], many=True)
-    rotation_policy = fields.Nested(
-        AssociatedRotationPolicySchema, required=True
-    )
+    rotation_policy = fields.Nested(AssociatedRotationPolicySchema)
 
     @pre_load
     def load_data(self, data):
