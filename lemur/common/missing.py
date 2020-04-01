@@ -11,13 +11,14 @@ def convert_validity_years(data):
     :param data:
     :return:
     """
-    if data.get("validity_years"):
+    if data.get("validity_years") or data.get("validity_days"):
         now = arrow.utcnow()
         data["validity_start"] = now.isoformat()
         # adding time in days
-        # end = now.shift(years=+int(data["validity_years"]))
-        end = now.shift(days=+int(data["validity_years"]))
-
+        if data.get("validity_days"):
+            end = now.shift(days=+int(data["validity_days"]))
+        else:
+            end = now.shift(years=+int(data["validity_years"]))
 
         if not current_app.config.get("LEMUR_ALLOW_WEEKEND_EXPIRATION", True):
             if is_weekend(end):

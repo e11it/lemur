@@ -135,6 +135,7 @@ angular.module('lemur')
       $scope.certificate.validityStart = null;
       $scope.certificate.validityEnd = null;
       $scope.certificate.validityYears = null;
+      $scope.certificate.validityDays = null;
     };
 
     CertificateService.getDnsProviders().then(function (providers) {
@@ -271,6 +272,7 @@ angular.module('lemur')
     $scope.certificate.validityStart = null;
     $scope.certificate.validityEnd = null;
     $scope.certificate.validityYears = null;
+    $scope.certificate.validityDays = null;
   };
 
   $scope.create = function (certificate) {
