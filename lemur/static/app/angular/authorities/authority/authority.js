@@ -98,6 +98,7 @@ angular.module('lemur')
       $scope.authority.validityStart = null;
       $scope.authority.validityEnd = null;
       $scope.authority.validityYears = null;
+      $scope.authority.validityDays = null;
     };
 
     $scope.open1 = function() {

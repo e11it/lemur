@@ -73,6 +73,7 @@ class CertificateInputSchema(CertificateCreationSchema):
     validity_start = ArrowDateTime(allow_none=True)
     validity_end = ArrowDateTime(allow_none=True)
     validity_years = fields.Integer(allow_none=True)
+    validity_days = fields.Integer(allow_none=True)
 
     destinations = fields.Nested(AssociatedDestinationSchema, missing=[], many=True)
     notifications = fields.Nested(AssociatedNotificationSchema, missing=[], many=True)
