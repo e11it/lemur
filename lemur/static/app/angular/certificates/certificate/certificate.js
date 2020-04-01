@@ -106,6 +106,9 @@ angular.module('lemur')
         $scope.authorities = authorities;
       });
     };
+    $scope.getValidityDays = function () {
+      $scope.validityDays = $scope.certificate.days;
+    };
 
     $scope.getRotationPoliceByName = function (value) {
       return PolicesService.findPoliceByName(value).then(function (rotation_policies) {
@@ -145,6 +148,7 @@ angular.module('lemur')
       $scope.certificate.validityStart = null;
       $scope.certificate.validityEnd = null;
       $scope.certificate.validityYears = null;
+      $scope.certificate.validityDays = null;
     };
 
     CertificateService.getDnsProviders().then(function (providers) {
@@ -288,6 +292,7 @@ angular.module('lemur')
     $scope.certificate.validityStart = null;
     $scope.certificate.validityEnd = null;
     $scope.certificate.validityYears = null;
+    $scope.certificate.validityDays = null;
   };
 
   $scope.create = function (certificate) {

@@ -338,7 +338,7 @@ def test_certificate_out_of_range_date(client, authority):
         "owner": "jim@example.com",
         "authority": {"id": authority.id},
         "description": "testtestest",
-        "validityYears": 100,
+        "validityYears": 1825,
         "dnsProvider": None,
     }
 
@@ -364,7 +364,7 @@ def test_certificate_valid_years(client, authority):
         "owner": "jim@example.com",
         "authority": {"id": authority.id},
         "description": "testtestest",
-        "validityYears": 1,
+        "validityYears": 365,
         "dnsProvider": None,
     }
 

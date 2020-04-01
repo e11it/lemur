@@ -73,6 +73,7 @@ class CertificateInputSchema(CertificateCreationSchema):
     validity_start = ArrowDateTime(allow_none=True)
     validity_end = ArrowDateTime(allow_none=True)
     validity_years = fields.Integer(allow_none=True)
+    validity_days = fields.Integer(allow_none=True)
 
     destinations = fields.Nested(AssociatedDestinationSchema, missing=[], many=True)
     notifications = fields.Nested(AssociatedNotificationSchema, missing=[], many=True)
@@ -165,12 +166,7 @@ class CertificateEditInputSchema(CertificateSchema):
         AssociatedCertificateSchema, missing=[], many=True
     )  # deprecated
     roles = fields.Nested(AssociatedRoleSchema, missing=[], many=True)
-    rotation_policy = fields.Nested(
-        AssociatedRotationPolicySchema,
-        missing={"name": "default"},
-        allow_none=True,
-        default={"name": "default"},
-    )
+    rotation_policy = fields.Nested(AssociatedRotationPolicySchema)
 
     @pre_load
     def load_data(self, data):

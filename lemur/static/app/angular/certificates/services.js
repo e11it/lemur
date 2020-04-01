@@ -187,6 +187,9 @@ angular.module('lemur')
       if (certificate.validityYears === '') { // if a user de-selects validity years we ignore it
         delete certificate.validityYears;
       }
+      if (certificate.validityDays === '') { // if a user de-selects validity days we ignore it
+        delete certificate.validityDays;
+      }
       return CertificateApi.post(certificate);
     };
 
@@ -275,6 +278,9 @@ angular.module('lemur')
 
         if (certificate.dnsProviderId) {
           certificate.dnsProvider = {id: certificate.dnsProviderId};
+        }
+        if (!certificate.days) {
+          certificate.days = defaults.days;
         }
       });
     };
