@@ -18,7 +18,7 @@ from lemur.common.defaults import common_name, country, state, location, organiz
 from lemur.common.utils import parse_certificate
 from lemur.plugins.bases import DestinationPlugin
 from lemur.plugins.bases import SourcePlugin
-
+from lemur.plugins.lemur_pkcs8.plugin import create_pkcs8
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
 
@@ -228,6 +228,13 @@ class VaultDestinationPlugin(DestinationPlugin):
             "validation": ".*",
             "helpMessage": "Valid regex filter",
         },
+        {
+            "name": "privateKeyInPkcs8",
+            "type": "bool",
+            "required": False,
+            "default": False,
+            "helpMessage": "Convert private key to pkcs8",
+        },
     ]
 
     def __init__(self, *args, **kwargs):
@@ -253,6 +260,10 @@ class VaultDestinationPlugin(DestinationPlugin):
         obj_name = self.get_option("objectName", options)
         api_version = self.get_option("vaultKvApiVersion", options)
         san_filter = self.get_option("sanFilter", options)
+        private_key_to_pkcs8 = self.get_option("privateKeyInPkcs8", options)
+
+        if private_key_to_pkcs8:
+            private_key = create_pkcs8(private_key).decode('utf-8')
 
         san_list = get_san_list(body)
         if san_filter:
