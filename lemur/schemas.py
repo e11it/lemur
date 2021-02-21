@@ -61,10 +61,14 @@ def get_object_attribute(data, many=False):
     if many:
         ids = [d.get("id") for d in data]
         names = [d.get("name") for d in data]
+        labels = [d.get("label") for d in data]
 
         if None in ids:
             if None in names:
-                raise ValidationError("Associated object require a name or id.")
+                if None in labels:
+                    raise ValidationError("Associated object require a name or id or label.")
+                else:
+                    return "label"
             else:
                 return "name"
         return "id"
@@ -73,8 +77,10 @@ def get_object_attribute(data, many=False):
             return "id"
         elif data.get("name"):
             return "name"
+        elif data.get("label"):
+            return "label"
         else:
-            raise ValidationError("Associated object require a name or id.")
+            raise ValidationError("Associated object require a name or id or label.")
 
 
 def fetch_objects(model, data, many=False):
@@ -136,6 +142,7 @@ class AssociatedRoleSchema(LemurInputSchema):
 class AssociatedDestinationSchema(LemurInputSchema):
     id = fields.Int()
     name = fields.String()
+    label = fields.String()
 
     @post_load
     def get_object(self, data, many=False):
