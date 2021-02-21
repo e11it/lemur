@@ -18,3 +18,16 @@ def test_convert_validity_years(session):
             data["validity_end"]
             == arrow.utcnow().shift(years=+1, days=-2).isoformat()
         )
+
+    with freeze_time("2016-10-10"):
+        data = convert_validity_years(dict(validity_days=20))
+
+        assert data["validity_start"] == arrow.utcnow().isoformat()
+        assert data["validity_end"] == arrow.utcnow().shift(days=+20).isoformat()
+
+    with freeze_time("2015-05-05"):
+        data = convert_validity_years(dict(validity_days=10))
+        assert (
+                data["validity_end"]
+                == arrow.utcnow().shift(days=+10).isoformat()
+            )

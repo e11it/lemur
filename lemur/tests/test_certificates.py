@@ -339,7 +339,7 @@ def test_certificate_out_of_range_date(client, authority):
         "owner": "jim@example.com",
         "authority": {"id": authority.id},
         "description": "testtestest",
-        "validityYears": 100,
+        "validityYears": 5,
         "dnsProvider": None,
     }
 

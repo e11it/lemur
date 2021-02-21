@@ -126,6 +126,9 @@ angular.module('lemur')
       if (authority.validityYears === '') { // if a user de-selects validity years we ignore it
         delete authority.validityYears;
       }
+      if (authority.validityDays === '') { // if a user de-selects validity days we ignore it
+        delete authority.validityDays;
+      }
       return AuthorityApi.post(authority);
     };
 

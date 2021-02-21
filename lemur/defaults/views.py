@@ -74,6 +74,7 @@ class LemurDefaults(AuthenticatedResource):
             ),
             issuer_plugin=current_app.config.get("LEMUR_DEFAULT_ISSUER_PLUGIN"),
             authority=default_authority,
+            days=current_app.config.get("LEMUR_DEFAULT_DAYS")
         )
 
 
