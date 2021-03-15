@@ -6,7 +6,7 @@ from flask import current_app
 from cryptography.hazmat.primitives import serialization
 from lemur.plugins.bases import ExportPlugin
 from lemur.plugins import lemur_pkcs8 as pkcs8
-from lemur.common.utils import parse_private_key
+from lemur.common.utils import parse_private_key,parse_certificate
 
 
 def run_process(command):
@@ -45,7 +45,6 @@ class PKCS8ExportPlugin(ExportPlugin):
     def export(self, body, chain, key, options, **kwargs):
         """
         Creates CSR from certificate
-
         :param key:
         :param chain:
         :param body:
@@ -54,7 +53,8 @@ class PKCS8ExportPlugin(ExportPlugin):
         """
 
         raw = create_pkcs8(key)
-        extension = "p8"
+        cert_pem = parse_certificate(body).public_bytes(encoding=serialization.Encoding.PEM)
+        extension = "pem"
 
         # passphrase is None
-        return extension, None, raw
+        return extension, None, b"%b%b" % (cert_pem, raw)
